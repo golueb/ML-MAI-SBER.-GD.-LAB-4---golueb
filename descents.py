@@ -11,22 +11,11 @@ import numpy as np
 class LearningRate:
     """
     Класс для вычисления длины шага.
-
-    Parameters
-    ----------
-    lambda_ : float, optional
-        Начальная скорость обучения. По умолчанию 1e-3.
-    s0 : float, optional
-        Параметр для вычисления скорости обучения. По умолчанию 1.
-    p : float, optional
-        Степенной параметр для вычисления скорости обучения. По умолчанию 0.5.
-    iteration : int, optional
-        Текущая итерация. По умолчанию 0.
-
-    Methods
-    -------
-    __call__()
-        Вычисляет скорость обучения на текущей итерации.
+    lambda_ : float, optional - Начальная скорость обучения. По умолчанию 1e-3.
+    s0 : float, optional - Параметр для вычисления скорости обучения. По умолчанию 1.
+    p : float, optional - Степенной параметр для вычисления скорости обучения. По умолчанию 0.5.
+    iteration : int, optional - Текущая итерация. По умолчанию 0.
+    __call__() - Вычисляет скорость обучения на текущей итерации.
     """
     lambda_: float = 1e-3
     s0: float = 1
@@ -37,11 +26,7 @@ class LearningRate:
     def __call__(self):
         """
         Вычисляет скорость обучения по формуле lambda * (s0 / (s0 + t))^p.
-
-        Returns
-        -------
-        float
-            Скорость обучения на текущем шаге.
+        float - Скорость обучения на текущем шаге.
         """
         self.iteration += 1
         return self.lambda_ * (self.s0 / (self.s0 + self.iteration)) ** self.p
@@ -50,17 +35,10 @@ class LearningRate:
 class LossFunction(Enum):
     """
     Перечисление для выбора функции потерь.
-
-    Attributes
-    ----------
-    MSE : auto
-        Среднеквадратическая ошибка.
-    MAE : auto
-        Средняя абсолютная ошибка.
-    LogCosh : auto
-        Логарифм гиперболического косинуса от ошибки.
-    Huber : auto
-        Функция потерь Хьюбера.
+    MSE : auto - Среднеквадратическая ошибка.
+    MAE : auto - Средняя абсолютная ошибка.
+    LogCosh : auto - Логарифм гиперболического косинуса от ошибки.
+    Huber : auto - Функция потерь Хьюбера.
     """
     MSE = auto()
     MAE = auto()
@@ -78,61 +56,30 @@ class BaseDescent:
     
     """
     Базовый класс для всех методов градиентного спуска.
-
-    Parameters
-    ----------
-    dimension : int
-        Размерность пространства признаков.
-    lambda_ : float, optional
-        Параметр скорости обучения. По умолчанию 1e-3.
-    loss_function : LossFunction, optional
-        Функция потерь, которая будет оптимизироваться. По умолчанию MSE.
-
-    Attributes
-    ----------
-    w : np.ndarray
-        Вектор весов модели.
-    lr : LearningRate
-        Скорость обучения.
-    loss_function : LossFunction
-        Функция потерь.
-
-    Methods
-    -------
-    step(x: np.ndarray, y: np.ndarray) -> np.ndarray
-        Шаг градиентного спуска.
-    update_weights(gradient: np.ndarray) -> np.ndarray
-        Обновление весов на основе градиента. Метод шаблон.
-    calc_gradient(x: np.ndarray, y: np.ndarray) -> np.ndarray
-        Вычисление градиента функции потерь по весам. Метод шаблон.
-    calc_loss(x: np.ndarray, y: np.ndarray) -> float
-        Вычисление значения функции потерь.
-    predict(x: np.ndarray) -> np.ndarray
-        Вычисление прогнозов на основе признаков x.
+    dimension : int - Размерность пространства признаков.
+    lambda_ : float, optional - Параметр скорости обучения. По умолчанию 1e-3.
+    loss_function : LossFunction, optional - Функция потерь, которая будет оптимизироваться. По умолчанию MSE.
+    w : np.ndarray - Вектор весов модели.
+    lr : LearningRate - Скорость обучения.
+    loss_function : LossFunction - Функция потерь.
+    
+    step(x: np.ndarray, y: np.ndarray) -> np.ndarray - Шаг градиентного спуска.
+    update_weights(gradient: np.ndarray) -> np.ndarray - Обновление весов на основе градиента. Метод шаблон.
+    calc_gradient(x: np.ndarray, y: np.ndarray) -> np.ndarray - Вычисление градиента функции потерь по весам. Метод шаблон.
+    calc_loss(x: np.ndarray, y: np.ndarray) -> float - Вычисление значения функции потерь.
+    predict(x: np.ndarray) -> np.ndarray - Вычисление прогнозов на основе признаков x.
     """
 
 
     def __init__(self, dimension: int, lambda_: float = 1e-3, loss_function: LossFunction = LossFunction.MSE):
         """
         Инициализация базового класса для градиентного спуска.
-
-        Parameters
-        ----------
-        dimension : int
-            Размерность пространства признаков.
-        lambda_ : float
-            Параметр скорости обучения.
-        loss_function : LossFunction
-            Функция потерь, которая будет оптимизирована.
-
-        Attributes
-        ----------
-        w : np.ndarray
-            Начальный вектор весов, инициализированный случайным образом.
-        lr : LearningRate
-            Экземпляр класса для вычисления скорости обучения.
-        loss_function : LossFunction
-            Выбранная функция потерь.
+        dimension : int - Размерность пространства признаков.
+        lambda_ : float - Параметр скорости обучения.
+        loss_function : LossFunction - Функция потерь, которая будет оптимизирована.
+        w : np.ndarray - Начальный вектор весов, инициализированный случайным образом.
+        lr : LearningRate - Экземпляр класса для вычисления скорости обучения.
+        loss_function : LossFunction - Выбранная функция потерь.
         """
         self.w: np.ndarray = np.random.rand(dimension)
         self.lr: LearningRate = LearningRate(lambda_=lambda_)
@@ -141,18 +88,9 @@ class BaseDescent:
     def step(self, x: np.ndarray, y: np.ndarray) -> np.ndarray:
         """
         Выполнение одного шага градиентного спуска.
-
-        Parameters
-        ----------
-        x : np.ndarray
-            Массив признаков.
-        y : np.ndarray
-            Массив целевых переменных.
-
-        Returns
-        -------
-        np.ndarray
-            Разность между текущими и обновленными весами.
+        x : np.ndarray - Массив признаков.
+        y : np.ndarray - Массив целевых переменных.
+        np.ndarray - Разность между текущими и обновленными весами.
         """
 
         return self.update_weights(self.calc_gradient(x, y))
@@ -160,34 +98,17 @@ class BaseDescent:
     def update_weights(self, gradient: np.ndarray) -> np.ndarray:
         """
         Шаблон функции для обновления весов. Должен быть переопределен в подклассах.
-
-        Parameters
-        ----------
-        gradient : np.ndarray
-            Градиент функции потерь по весам.
-
-        Returns
-        -------
-        np.ndarray
-            Разность между текущими и обновленными весами. Этот метод должен быть реализован в подклассах.
+        gradient : np.ndarray - Градиент функции потерь по весам.
+        np.ndarray - Разность между текущими и обновленными весами. Этот метод должен быть реализован в подклассах.
         """
         pass
 
     def calc_gradient(self, x: np.ndarray, y: np.ndarray) -> np.ndarray:
         """
         Шаблон функции для вычисления градиента функции потерь по весам. Должен быть переопределен в подклассах.
-
-        Parameters
-        ----------
-        x : np.ndarray
-            Массив признаков.
-        y : np.ndarray
-            Массив целевых переменных.
-
-        Returns
-        -------
-        np.ndarray
-            Градиент функции потерь по весам. Этот метод должен быть реализован в подклассах.
+        x : np.ndarray - Массив признаков.
+        y : np.ndarray - Массив целевых переменных.
+        np.ndarray - Градиент функции потерь по весам. Этот метод должен быть реализован в подклассах.
         """
         pass
 
@@ -197,34 +118,17 @@ class BaseDescent:
         return  losses
         """
         Вычисление значения функции потерь с использованием текущих весов.
-
-        Parameters
-        ----------
-        x : np.ndarray
-            Массив признаков.
-        y : np.ndarray
-            Массив целевых переменных.
-
-        Returns
-        -------
-        float
-            Значение функции потерь.
+        x : np.ndarray - Массив признаков.
+        y : np.ndarray - Массив целевых переменных.
+        losses - Значение функции потерь.
         """
         raise NotImplementedError('BaseDescent calc_loss function not implemented')
 
     def predict(self, x: np.ndarray) -> np.ndarray:
         """
         Расчет прогнозов на основе признаков x.
-
-        Parameters
-        ----------
-        x : np.ndarray
-            Массив признаков.
-
-        Returns
-        -------
-        np.ndarray
-            Прогнозируемые значения.
+        x : np.ndarray - Массив признаков.
+        np.ndarray - Прогнозируемые значения.
         """
         return np.dot(x,self.w)
         raise NotImplementedError('BaseDescent predict function not implemented')
@@ -233,13 +137,8 @@ class BaseDescent:
 class VanillaGradientDescent(BaseDescent):
     """
     Класс полного градиентного спуска.
-
-    Методы
-    -------
-    update_weights(gradient: np.ndarray) -> np.ndarray
-        Обновление весов с учетом градиента.
-    calc_gradient(x: np.ndarray, y: np.ndarray) -> np.ndarray
-        Вычисление градиента функции потерь по весам.
+    update_weights(gradient: np.ndarray) -> np.ndarray - Обновление весов с учетом градиента.
+    calc_gradient(x: np.ndarray, y: np.ndarray) -> np.ndarray - Вычисление градиента функции потерь по весам.
     """
     def __init__(self,dimension: int,  lambda_: float = 1e-3,loss_function: LossFunction = LossFunction.MSE):
         super().__init__(dimension,lambda_, loss_function)
@@ -256,38 +155,19 @@ class VanillaGradientDescent(BaseDescent):
         return self.deltaw
         """
         Обновление весов на основе градиента.
-
-        Parameters
-        ----------
-        gradient : np.ndarray
-            Градиент функции потерь по весам.
-
-        Returns
-        -------
-        np.ndarray
-            Разность весов (w_{k + 1} - w_k).
+        gradient : np.ndarray - Градиент функции потерь по весам.
+        np.ndarray - Разность весов (w_{k + 1} - w_k).
         """
         raise NotImplementedError('VanillaGradientDescent update_weights function not implemented')
 
     def calc_gradient(self, x: np.ndarray, y: np.ndarray) -> np.ndarray:
         y_pred = self.predict(x)
         return (2 / len(y)) * x.T @ (y_pred - y)
-
-
         """
         Вычисление градиента функции потерь по весам.
-
-        Parameters
-        ----------
-        x : np.ndarray
-            Массив признаков.
-        y : np.ndarray
-            Массив целевых переменных.
-
-        Returns
-        -------
-        np.ndarray
-            Градиент функции потерь по весам.
+        x : np.ndarray - Массив признаков.
+        y : np.ndarray - Массив целевых переменных.
+        np.ndarray - Градиент функции потерь по весам.
         """
         raise NotImplementedError('VanillaGradientDescent calc_gradient function not implemented')
 
@@ -295,21 +175,9 @@ class VanillaGradientDescent(BaseDescent):
 class StochasticDescent(VanillaGradientDescent):
     """
     Класс стохастического градиентного спуска.
-
-    Parameters
-    ----------
-    batch_size : int, optional
-        Размер мини-пакета. По умолчанию 50.
-
-    Attributes
-    ----------
-    batch_size : int
-        Размер мини-пакета.
-
-    Методы
-    -------
-    calc_gradient(x: np.ndarray, y: np.ndarray) -> np.ndarray
-        Вычисление градиента функции потерь по мини-пакетам.
+    batch_size : int, optional - Размер мини-пакета. По умолчанию 50.
+    batch_size : int - Размер мини-пакета.
+    calc_gradient(x: np.ndarray, y: np.ndarray) -> np.ndarray - Вычисление градиента функции потерь по мини-пакетам.
     """
 
     def __init__(self, dimension: int, lambda_: float = 1e-3, batch_size: int = 50,
@@ -328,18 +196,9 @@ class StochasticDescent(VanillaGradientDescent):
 
         """
         Вычисление градиента функции потерь по мини-пакетам.
-
-        Parameters
-        ----------
-        x : np.ndarray
-            Массив признаков.
-        y : np.ndarray
-            Массив целевых переменных.
-
-        Returns
-        -------
-        np.ndarray
-            Градиент функции потерь по весам, вычисленный по мини-пакету.
+        x : np.ndarray - Массив признаков.
+        y : np.ndarray - Массив целевых переменных.
+        np.ndarray - Градиент функции потерь по весам, вычисленный по мини-пакету.
         """
         raise NotImplementedError('StochasticDescent calc_gradient function not implemented')
 
@@ -347,41 +206,20 @@ class StochasticDescent(VanillaGradientDescent):
 class MomentumDescent(VanillaGradientDescent):
     """
     Класс градиентного спуска с моментом.
-
-    Параметры
-    ----------
-    dimension : int
-        Размерность пространства признаков.
-    lambda_ : float
-        Параметр скорости обучения.
-    loss_function : LossFunction
-        Оптимизируемая функция потерь.
-
-    Атрибуты
-    ----------
-    alpha : float
-        Коэффициент момента.
-    h : np.ndarray
-        Вектор момента для весов.
-
-    Методы
-    -------
-    update_weights(gradient: np.ndarray) -> np.ndarray
-        Обновление весов с использованием момента.
+    dimension : int - Размерность пространства признаков.
+    lambda_ : float - Параметр скорости обучения.
+    loss_function : LossFunction - Оптимизируемая функция потерь.
+    alpha : float - Коэффициент момента.
+    h : np.ndarray - Вектор момента для весов.
+    update_weights(gradient: np.ndarray) -> np.ndarray - Обновление весов с использованием момента.
     """
 
     def __init__(self, dimension: int, lambda_: float = 1e-3, loss_function: LossFunction = LossFunction.MSE):
         """
         Инициализация класса градиентного спуска с моментом.
-
-        Parameters
-        ----------
-        dimension : int
-            Размерность пространства признаков.
-        lambda_ : float
-            Параметр скорости обучения.
-        loss_function : LossFunction
-            Оптимизируемая функция потерь.
+        dimension : int - Размерность пространства признаков.
+        lambda_ : float - Параметр скорости обучения.
+        loss_function : LossFunction - Оптимизируемая функция потерь.
         """
         super().__init__(dimension, lambda_, loss_function)
         self.alpha: float = 0.9
@@ -399,67 +237,32 @@ class MomentumDescent(VanillaGradientDescent):
         return self.deltaw
         """
         Обновление весов с использованием момента.
-
-        Parameters
-        ----------
-        gradient : np.ndarray
-            Градиент функции потерь.
-
-        Returns
-        -------
-        np.ndarray
-            Разность весов (w_{k + 1} - w_k).
+        gradient : np.ndarray - Градиент функции потерь.
+        np.ndarray - Разность весов (w_{k + 1} - w_k).
         """
-        # TODO: implement updating weights function
         raise NotImplementedError('MomentumDescent update_weights function not implemented')
 
 
 class Adam(VanillaGradientDescent):
     """
     Класс градиентного спуска с адаптивной оценкой моментов (Adam).
-
-    Параметры
-    ----------
-    dimension : int
-        Размерность пространства признаков.
-    lambda_ : float
-        Параметр скорости обучения.
-    loss_function : LossFunction
-        Оптимизируемая функция потерь.
-
-    Атрибуты
-    ----------
-    eps : float
-        Малая добавка для предотвращения деления на ноль.
-    m : np.ndarray
-        Векторы первого момента.
-    v : np.ndarray
-        Векторы второго момента.
-    beta_1 : float
-        Коэффициент распада для первого момента.
-    beta_2 : float
-        Коэффициент распада для второго момента.
-    iteration : int
-        Счетчик итераций.
-
-    Методы
-    -------
-    update_weights(gradient: np.ndarray) -> np.ndarray
-        Обновление весов с использованием адаптивной оценки моментов.
+    dimension : int - Размерность пространства признаков.
+    lambda_ : float - Параметр скорости обучения.
+    loss_function : LossFunction - Оптимизируемая функция потерь.
+    eps : float - Малая добавка для предотвращения деления на ноль.
+    m : np.ndarray - Векторы первого момента.
+    v : np.ndarray - Векторы второго момента.
+    beta_1 : float - Коэффициент распада для первого момента.
+    beta_2 : float - Коэффициент распада для второго момента.
+    update_weights(gradient: np.ndarray) -> np.ndarray - Обновление весов с использованием адаптивной оценки моментов.
     """
 
     def __init__(self, dimension: int, lambda_: float = 1e-3, loss_function: LossFunction = LossFunction.MSE):
         """
         Инициализация класса Adam.
-
-        Parameters
-        ----------
-        dimension : int
-            Размерность пространства признаков.
-        lambda_ : float
-            Параметр скорости обучения.
-        loss_function : LossFunction
-            Оптимизируемая функция потерь.
+        dimension : int - Размерность пространства признаков.
+        lambda_ : float - Параметр скорости обучения.
+        loss_function : LossFunction - Оптимизируемая функция потерь.
         """
         super().__init__(dimension, lambda_, loss_function)
         self.eps: float = 1e-8
@@ -475,16 +278,8 @@ class Adam(VanillaGradientDescent):
     def update_weights(self, gradient: np.ndarray) -> np.ndarray:
         """
         Обновление весов с использованием адаптивной оценки моментов.
-
-        Parameters
-        ----------
-        gradient : np.ndarray
-            Градиент функции потерь.
-
-        Returns
-        -------
-        np.ndarray
-            Разность весов (w_{k + 1} - w_k).
+        gradient : np.ndarray - Градиент функции потерь.
+        np.ndarray - Разность весов (w_{k + 1} - w_k).
         """
         self.iteration += 1
         self.m = self.m*self.beta_1 + (1 - self.beta_1) * gradient
@@ -503,25 +298,11 @@ class Adam(VanillaGradientDescent):
 class BaseDescentReg(BaseDescent):
     """
     Базовый класс для градиентного спуска с регуляризацией.
-
-    Параметры
-    ----------
-    *args : tuple
-        Аргументы, передаваемые в базовый класс.
-    mu : float, optional
-        Коэффициент регуляризации. По умолчанию равен 0.
-    **kwargs : dict
-        Ключевые аргументы, передаваемые в базовый класс.
-
-    Атрибуты
-    ----------
-    mu : float
-        Коэффициент регуляризации.
-
-    Методы
-    -------
-    calc_gradient(x: np.ndarray, y: np.ndarray) -> np.ndarray
-        Вычисление градиента функции потерь с учетом L2 регуляризации по весам.
+    *args : tuple - Аргументы, передаваемые в базовый класс.
+    mu : float, optional - Коэффициент регуляризации. По умолчанию равен 0.
+    **kwargs : dict - Ключевые аргументы, передаваемые в базовый класс.
+    mu : float - Коэффициент регуляризации.
+    calc_gradient(x: np.ndarray, y: np.ndarray) -> np.ndarray - Вычисление градиента функции потерь с учетом L2 регуляризации по весам.
     """
 
     def __init__(self, *args, mu: float = 0, **kwargs):
@@ -535,18 +316,9 @@ class BaseDescentReg(BaseDescent):
     def calc_gradient(self, x: np.ndarray, y: np.ndarray) -> np.ndarray:
         """
         Вычисление градиента функции потерь и L2 регуляризации по весам.
-
-        Parameters
-        ----------
-        x : np.ndarray
-            Массив признаков.
-        y : np.ndarray
-            Массив целевых переменных.
-
-        Returns
-        -------
-        np.ndarray
-            Градиент функции потерь с учетом L2 регуляризации по весам.
+        x : np.ndarray - Массив признаков.
+        y : np.ndarray - Массив целевых переменных.
+        np.ndarray - Градиент функции потерь с учетом L2 регуляризации по весам.
         """
         l2_gradient: np.ndarray = np.zeros_like(x.shape[1])  
 

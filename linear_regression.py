@@ -11,27 +11,13 @@ from descents import get_descent
 class LinearRegression:
     """
     Класс линейной регрессии.
-
-    Parameters
-    ----------
-    descent_config : dict
-        Конфигурация градиентного спуска.
-    tolerance : float, optional
-        Критерий остановки для квадрата евклидова нормы разности весов. По умолчанию равен 1e-4.
-    max_iter : int, optional
-        Критерий остановки по количеству итераций. По умолчанию равен 300.
-
-    Attributes
-    ----------
-    descent : BaseDescent
-        Экземпляр класса, реализующего градиентный спуск.
-    tolerance : float
-        Критерий остановки для квадрата евклидова нормы разности весов.
-    max_iter : int
-        Критерий остановки по количеству итераций.
-    loss_history : List[float]
-        История значений функции потерь на каждой итерации.
-
+    descent_config : dict - Конфигурация градиентного спуска.
+    tolerance : float, optional - Критерий остановки для квадрата евклидова нормы разности весов. По умолчанию равен 1e-4.
+    max_iter : int, optional - Критерий остановки по количеству итераций. По умолчанию равен 300.
+    descent : BaseDescent - Экземпляр класса, реализующего градиентный спуск.
+    tolerance : float - Критерий остановки для квадрата евклидова нормы разности весов.
+    max_iter : int - Критерий остановки по количеству итераций.
+    loss_history : List[float] - История значений функции потерь на каждой итерации.
     """
 
     def __init__(self, descent_config: dict, tolerance: float = 1e-4, max_iter: int = 300):
@@ -50,19 +36,9 @@ class LinearRegression:
     def fit(self, x: np.ndarray, y: np.ndarray) -> LinearRegression:
         """
         Обучение модели линейной регрессии, подбор весов для наборов данных x и y.
-
-        Parameters
-        ----------
-        x : np.ndarray
-            Массив признаков.
-        y : np.ndarray
-            Массив целевых переменных.
-
-        Returns
-        -------
-        self : LinearRegression
-            Возвращает экземпляр класса с обученными весами.
-
+        x : np.ndarray - Массив признаков.
+        y : np.ndarray - Массив целевых переменных.
+        self : LinearRegression - Возвращает экземпляр класса с обученными весами.
         """
         initial_loss = self.descent.calc_loss(x, y)
         self.loss_history.append(initial_loss)
@@ -82,40 +58,23 @@ class LinearRegression:
                 break
 
         return self
-        # TODO: реализовать подбор весов для x и y
+
         raise NotImplementedError('Функция fit класса LinearRegression не реализована')
 
     def predict(self, x: np.ndarray) -> np.ndarray:
         """
         Прогнозирование целевых переменных для набора данных x.
-
-        Parameters
-        ----------
-        x : np.ndarray
-            Массив признаков.
-
-        Returns
-        -------
-        prediction : np.ndarray
-            Массив прогнозируемых значений.
+        x : np.ndarray - Массив признаков.
+        prediction : np.ndarray - Массив прогнозируемых значений.
         """
         return self.descent.predict(x)
 
     def calc_loss(self, x: np.ndarray, y: np.ndarray) -> float:
         """
         Расчёт значения функции потерь для наборов данных x и y.
-
-        Parameters
-        ----------
-        x : np.ndarray
-            Массив признаков.
-        y : np.ndarray
-            Массив целевых переменных.
-
-        Returns
-        -------
-        loss : float
-            Значение функции потерь.
+        x : np.ndarray - Массив признаков.
+        y : np.ndarray - Массив целевых переменных.
+        loss : float - Значение функции потерь.
         """
         self.grad = (2/len(y))*x.T@(np.dot(x,self.w) - y)
         return self.descent.calc_loss(x, y)
